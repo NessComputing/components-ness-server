@@ -24,14 +24,22 @@
 
   <modules>
     <module>server</module>
+    <module>templates</module>
   </modules>
 
   <properties>
     <dep.yammer.version>2.1.2</dep.yammer.version>
+    <dep.jersey.version>1.13</dep.jersey.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>com.nesscomputing.components</groupId>
+        <artifactId>ness-core</artifactId>
+        <version>1.2.0</version>
+      </dependency>
+
       <dependency>
         <groupId>com.nesscomputing.components</groupId>
         <artifactId>ness-config</artifactId>
@@ -60,6 +68,36 @@
         <groupId>com.nesscomputing.components</groupId>
         <artifactId>ness-jmx</artifactId>
         <version>1.1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.nesscomputing.components</groupId>
+        <artifactId>ness-httpserver</artifactId>
+        <version>2.1.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.nesscomputing.components</groupId>
+        <artifactId>ness-jersey</artifactId>
+        <version>1.1.1-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.nesscomputing.components</groupId>
+        <artifactId>ness-jackson</artifactId>
+        <version>1.0.3</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.nesscomputing.components</groupId>
+        <artifactId>ness-jdbi</artifactId>
+        <version>1.3.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.sun.jersey.contribs</groupId>
+        <artifactId>jersey-guice</artifactId>
+        <version>${dep.jersey.version}</version>
       </dependency>
 
       <dependency>

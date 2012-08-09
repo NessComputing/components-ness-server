@@ -35,7 +35,6 @@ import com.nesscomputing.log.jmx.guice.JmxLoggingModule;
 import com.nesscomputing.log4j.ConfigureStandaloneLogging;
 import com.nesscomputing.logging.AssimilateForeignLogging;
 import com.nesscomputing.logging.Log;
-import com.yammer.metrics.guice.InstrumentationModule;
 
 /**
  * Standalone main class.
@@ -46,6 +45,15 @@ import com.yammer.metrics.guice.InstrumentationModule;
  *  <li>ness.config.location - An URI to load configuration from</li>
  *  <li>ness.config - A configuration path to load from the config URI</li>
  *  <li>log4j.configuration - An URI to load the logging configuration from.</li>
+ * </ul>
+ *
+ * This installs a basic set of Guice modules that every server should use:
+ * <ul>
+ *  <li>configuration</li>
+ *  <li>lifecycle</li>
+ *  <li>log control over jmx</li>
+ *  <li>jmx export</li>
+ *  <li>jmx starter</li>
  * </ul>
  */
 public abstract class StandaloneServer
@@ -144,11 +152,11 @@ public abstract class StandaloneServer
             @Override
             public void configure(final Binder binder) {
                 binder.install(new ConfigModule(config));
+                binder.install(getLifecycleModule());
+
                 binder.install(new JmxModule());
                 binder.install(new JmxStarterModule(config));
-                binder.install(new InstrumentationModule());
                 binder.install(new JmxLoggingModule(getServerType()));
-                binder.install(getLifecycleModule());
             }
         };
     }
