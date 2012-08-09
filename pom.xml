@@ -13,11 +13,12 @@
     <connection>scm:git:git://github.com/NessComputing/components-ness-server.git</connection>
     <developerConnection>scm:git:git@github.com:NessComputing/components-ness-server.git</developerConnection>
     <url>http://github.com/NessComputing/components-ness-server</url>
+    <tag>ness-server-parent-1.0.0</tag>
   </scm>
 
   <groupId>com.nesscomputing.components</groupId>
   <artifactId>ness-server-parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>ness-server-parent</name>
   <packaging>pom</packaging>
   <description>Ness server component. Startup and shutdown logic for services.</description>
@@ -98,7 +99,7 @@
       <dependency>
         <groupId>com.nesscomputing.components</groupId>
         <artifactId>ness-jersey</artifactId>
-        <version>1.1.1-SNAPSHOT</version>
+        <version>1.1.1</version>
       </dependency>
 
       <dependency>
