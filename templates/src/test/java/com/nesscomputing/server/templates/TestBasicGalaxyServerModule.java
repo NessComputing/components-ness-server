@@ -3,13 +3,12 @@ package com.nesscomputing.server.templates;
 import org.junit.Test;
 
 import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.google.inject.Stage;
 import com.nesscomputing.config.Config;
 import com.nesscomputing.config.ConfigModule;
 import com.nesscomputing.lifecycle.guice.LifecycleModule;
 
-public class TestBasicServerModule
+public class TestBasicGalaxyServerModule
 {
     @Test
     public void testSimple()
@@ -19,6 +18,6 @@ public class TestBasicServerModule
         Guice.createInjector(Stage.PRODUCTION,
                              new LifecycleModule(),
                              new ConfigModule(config),
-                             new BasicServerModule(config));
+                             new BasicGalaxyServerModule(config));
     }
 }

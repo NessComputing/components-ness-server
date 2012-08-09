@@ -18,6 +18,7 @@ package com.nesscomputing.server.templates;
 
 import com.google.inject.AbstractModule;
 import com.nesscomputing.config.Config;
+import com.nesscomputing.galaxy.GalaxyConfigModule;
 import com.nesscomputing.httpserver.HttpServerModule;
 import com.nesscomputing.httpserver.selftest.SelftestModule;
 import com.nesscomputing.jackson.NessJacksonModule;
@@ -35,6 +36,7 @@ import com.yammer.metrics.guice.InstrumentationModule;
  * Defines a basic server suitable for serving REST resources using JSON over HTTP.
  *
  * <ul>
+ *   <li>Galaxy support</li>
  *   <li>Http Server</li>
  *   <li>Yammer metrics</li>
  *   <li>JDBI database configuration</li>
@@ -43,17 +45,17 @@ import com.yammer.metrics.guice.InstrumentationModule;
  *   <li>selftest endpoint</li>
  * </ul>
  */
-public class BasicServerModule extends AbstractModule
+public class BasicGalaxyServerModule extends AbstractModule
 {
     private final Config config;
     private final String[] paths;
 
-    public BasicServerModule(final Config config)
+    public BasicGalaxyServerModule(final Config config)
     {
         this(config, "/*");
     }
 
-    public BasicServerModule(final Config config, final String... paths)
+    public BasicGalaxyServerModule(final Config config, final String... paths)
     {
         this.config = config;
         this.paths = paths;
@@ -62,6 +64,7 @@ public class BasicServerModule extends AbstractModule
     @Override
     protected void configure()
     {
+        install(new GalaxyConfigModule());
         install(new HttpServerModule(config));
 
         install(new InstrumentationModule());
