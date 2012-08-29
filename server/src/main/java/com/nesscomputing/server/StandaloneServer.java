@@ -15,8 +15,6 @@
  */
 package com.nesscomputing.server;
 
-import org.apache.commons.lang3.time.StopWatch;
-
 import com.google.common.base.Preconditions;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
@@ -24,6 +22,9 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Stage;
+
+import org.apache.commons.lang3.time.StopWatch;
+
 import com.nesscomputing.config.Config;
 import com.nesscomputing.config.ConfigModule;
 import com.nesscomputing.jmx.JmxModule;
@@ -35,6 +36,7 @@ import com.nesscomputing.log.jmx.guice.JmxLoggingModule;
 import com.nesscomputing.log4j.ConfigureStandaloneLogging;
 import com.nesscomputing.logging.AssimilateForeignLogging;
 import com.nesscomputing.logging.Log;
+import com.nesscomputing.server.info.ServerInfo;
 
 /**
  * Standalone main class.
@@ -89,6 +91,20 @@ public abstract class StandaloneServer
     public void startServer()
     {
         Preconditions.checkState(!started, "Server was already started, double-start denied!");
+
+        ServerInfo.add(ServerInfo.SERVER_SERVICE, getServerType());
+
+        final Object binaryVersion = ServerInfo.get(ServerInfo.SERVER_BINARY);
+
+        if (binaryVersion != null) {
+            LOG.info("Service startup begins, version: %s-%s (server type: %s), running in %s mode.", binaryVersion,
+                                                                                 ServerInfo.get(ServerInfo.SERVER_VERSION),
+                                                                                 ServerInfo.get(ServerInfo.SERVER_SERVICE),
+                                                                                 ServerInfo.get(ServerInfo.SERVER_TYPE));
+        }
+        else {
+            LOG.info("Service startup begins (server type: %s)", ServerInfo.get(ServerInfo.SERVER_SERVICE));
+        }
 
         final StopWatch timer = new StopWatch();
         timer.start();
