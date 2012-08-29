@@ -121,6 +121,18 @@
       </dependency>
 
       <dependency>
+        <groupId>com.nesscomputing.components</groupId>
+        <artifactId>ness-scopes</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.nesscomputing.components</groupId>
+        <artifactId>ness-tracking</artifactId>
+        <version>1.0.2</version>
+      </dependency>
+
+      <dependency>
         <groupId>com.sun.jersey</groupId>
         <artifactId>jersey-core</artifactId>
         <version>${dep.jersey.version}</version>

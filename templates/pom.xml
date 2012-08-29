@@ -54,6 +54,16 @@
     </dependency>
 
     <dependency>
+      <groupId>com.nesscomputing.components</groupId>
+      <artifactId>ness-scopes</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.nesscomputing.components</groupId>
+      <artifactId>ness-tracking</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-core</artifactId>
     </dependency>
