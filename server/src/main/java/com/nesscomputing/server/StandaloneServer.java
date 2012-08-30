@@ -64,6 +64,8 @@ public abstract class StandaloneServer
 {
     private static final Log LOG = Log.findLog();
 
+    private final String serverToken;
+
     private final Thread shutdownThread = new Thread("Server Shutdown Thread")
     {
         @Override
@@ -81,6 +83,8 @@ public abstract class StandaloneServer
 
     public StandaloneServer()
     {
+        serverToken = UUID.randomUUID().toString();
+
         // Hook up logging.
         ConfigureStandaloneLogging.configure(getServerType());
 
@@ -236,6 +240,6 @@ public abstract class StandaloneServer
 
     protected String getServerToken()
     {
-        return UUID.randomUUID().toString();
+        return serverToken;
     }
 }
