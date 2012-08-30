@@ -17,20 +17,13 @@ package com.nesscomputing.server.templates;
 
 
 import com.google.inject.AbstractModule;
+
 import com.nesscomputing.config.Config;
 import com.nesscomputing.galaxy.GalaxyConfigModule;
 import com.nesscomputing.httpserver.HttpServerModule;
-import com.nesscomputing.httpserver.selftest.SelftestModule;
 import com.nesscomputing.jackson.NessJacksonModule;
-import com.nesscomputing.jdbi.argument.ArgumentFactoryModule;
-import com.nesscomputing.jdbi.metrics.DatabaseMetricsModule;
-import com.nesscomputing.jersey.NessJerseyBinder;
-import com.nesscomputing.jersey.NessJerseyServletModule;
-import com.nesscomputing.jersey.exceptions.NessJerseyExceptionMapperModule;
-import com.nesscomputing.jersey.filter.BodySizeLimitResourceFilterFactory;
-import com.nesscomputing.jersey.json.NessJacksonJsonProvider;
-import com.sun.jersey.guice.JerseyServletModule;
-import com.yammer.metrics.guice.InstrumentationModule;
+import com.nesscomputing.scopes.threaddelegate.ThreadDelegatedScopeModule;
+import com.nesscomputing.tracking.guice.TrackingModule;
 
 /**
  * Defines a basic server suitable for serving REST resources using JSON over HTTP.
@@ -67,21 +60,11 @@ public class BasicGalaxyServerModule extends AbstractModule
         install(new GalaxyConfigModule());
         install(new HttpServerModule(config));
 
-        install(new InstrumentationModule());
-
-        install(new DatabaseMetricsModule());
-        install(new ArgumentFactoryModule());
-
         install (new NessJacksonModule());
 
-        install(new JerseyServletModule());
-        install(new NessJerseyServletModule(config, paths));
-        install (new NessJerseyExceptionMapperModule());
+        install(new ThreadDelegatedScopeModule());
+        install(new TrackingModule());
 
-        NessJerseyBinder.bindResourceFilterFactory(binder()).to(BodySizeLimitResourceFilterFactory.class);
-
-        bind (NessJacksonJsonProvider.class);
-
-        install(new SelftestModule());
+        install(new BasicDiscoveryServerModule(config, paths));
     }
 }

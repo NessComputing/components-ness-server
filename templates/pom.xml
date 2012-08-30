@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.nesscomputing.components</groupId>
     <artifactId>ness-server-parent</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>ness-server-templates</artifactId>
@@ -51,6 +51,21 @@
     <dependency>
       <groupId>com.nesscomputing.components</groupId>
       <artifactId>ness-jdbi</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.nesscomputing.components</groupId>
+      <artifactId>ness-scopes</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.nesscomputing.components</groupId>
+      <artifactId>ness-tracking</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.nesscomputing.components</groupId>
+      <artifactId>ness-serverinfo</artifactId>
     </dependency>
 
     <dependency>
