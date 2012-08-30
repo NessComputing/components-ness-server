@@ -17,8 +17,8 @@ package com.nesscomputing.server;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+
 import com.nesscomputing.config.Config;
-import com.nesscomputing.server.StandaloneServer;
 
 class DemoServer extends StandaloneServer
 {
@@ -57,5 +57,11 @@ class DemoServer extends StandaloneServer
             {
             }
         };
+    }
+
+    @Override
+    public String getServerType()
+    {
+        return "demo";
     }
 }

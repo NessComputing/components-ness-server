@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+
 import com.nesscomputing.config.Config;
 import com.nesscomputing.httpserver.HttpServer;
 import com.nesscomputing.server.StandaloneServer;
@@ -42,6 +43,12 @@ public class PunyServer extends StandaloneServer
     public Module getMainModule(final Config config)
     {
         return new PunyModule(config);
+    }
+
+    @Override
+    public String getServerType()
+    {
+        return "puny";
     }
 
     public static class PunyModule extends AbstractModule

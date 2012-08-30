@@ -17,8 +17,8 @@ package com.nesscomputing.server;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+
 import com.nesscomputing.config.Config;
-import com.nesscomputing.server.AnnouncingStandaloneServer;
 
 class AnnouncingDemoServer extends AnnouncingStandaloneServer
 {
@@ -57,5 +57,11 @@ class AnnouncingDemoServer extends AnnouncingStandaloneServer
             {
             }
         };
+    }
+
+    @Override
+    public String getServerType()
+    {
+        return "announcing-demo";
     }
 }
