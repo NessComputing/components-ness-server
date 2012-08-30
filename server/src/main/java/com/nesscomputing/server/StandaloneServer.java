@@ -15,6 +15,8 @@
  */
 package com.nesscomputing.server;
 
+import java.util.UUID;
+
 import com.google.common.base.Preconditions;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
@@ -36,7 +38,7 @@ import com.nesscomputing.log.jmx.guice.JmxLoggingModule;
 import com.nesscomputing.log4j.ConfigureStandaloneLogging;
 import com.nesscomputing.logging.AssimilateForeignLogging;
 import com.nesscomputing.logging.Log;
-import com.nesscomputing.server.info.ServerInfo;
+import com.nesscomputing.serverinfo.ServerInfo;
 
 /**
  * Standalone main class.
@@ -101,18 +103,18 @@ public abstract class StandaloneServer
     {
         Preconditions.checkState(!started, "Server was already started, double-start denied!");
 
-        ServerInfo.add(ServerInfo.SERVER_SERVICE, getServerType());
+        ServerInfo.add(ServerInfo.SERVER_TYPE, getServerType());
+        ServerInfo.add(ServerInfo.SERVER_TOKEN, getServerToken());
 
         final Object binaryVersion = ServerInfo.get(ServerInfo.SERVER_BINARY);
 
+        LOG.info("Service startup begins (type: %s, token: %s)", ServerInfo.get(ServerInfo.SERVER_TYPE),
+                                                                 ServerInfo.get(ServerInfo.SERVER_TOKEN));
+
         if (binaryVersion != null) {
-            LOG.info("Service startup begins, version: %s-%s (server type: %s), running in %s mode.", binaryVersion,
-                                                                                 ServerInfo.get(ServerInfo.SERVER_VERSION),
-                                                                                 ServerInfo.get(ServerInfo.SERVER_SERVICE),
-                                                                                 ServerInfo.get(ServerInfo.SERVER_TYPE));
-        }
-        else {
-            LOG.info("Service startup begins (server type: %s)", ServerInfo.get(ServerInfo.SERVER_SERVICE));
+            LOG.info("Binary: %s, version: %s, running in %s mode.", binaryVersion,
+                                                                     ServerInfo.get(ServerInfo.SERVER_VERSION),
+                                                                     ServerInfo.get(ServerInfo.SERVER_MODE));
         }
 
         final StopWatch timer = new StopWatch();

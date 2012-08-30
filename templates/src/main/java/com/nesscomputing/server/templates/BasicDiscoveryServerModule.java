@@ -29,6 +29,7 @@ import com.nesscomputing.jersey.NessJerseyServletModule;
 import com.nesscomputing.jersey.exceptions.NessJerseyExceptionMapperModule;
 import com.nesscomputing.jersey.filter.BodySizeLimitResourceFilterFactory;
 import com.nesscomputing.jersey.json.NessJacksonJsonProvider;
+import com.nesscomputing.serverinfo.ServerInfoModule;
 
 /**
  * Defines a basic server suitable for serving REST resources using JSON over HTTP when using the Discovery service.
@@ -73,5 +74,6 @@ public class BasicDiscoveryServerModule extends AbstractModule
         bind (NessJacksonJsonProvider.class);
 
         install(new SelftestModule());
+        install(new ServerInfoModule());
     }
 }
