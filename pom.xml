@@ -29,7 +29,7 @@
   </modules>
 
   <properties>
-    <dep.jackson.version>1.9.8</dep.jackson.version>
+    <dep.jackson.version>1.9.9</dep.jackson.version>
     <dep.yammer.version>2.1.2</dep.yammer.version>
     <dep.jersey.version>1.13</dep.jersey.version>
   </properties>
@@ -93,7 +93,7 @@
       <dependency>
         <groupId>com.nesscomputing.components</groupId>
         <artifactId>ness-httpserver</artifactId>
-        <version>2.1.1</version>
+        <version>2.2.0</version>
       </dependency>
 
       <dependency>
@@ -105,7 +105,7 @@
       <dependency>
         <groupId>com.nesscomputing.components</groupId>
         <artifactId>ness-jackson</artifactId>
-        <version>1.0.3</version>
+        <version>1.1.0</version>
       </dependency>
 
       <dependency>
