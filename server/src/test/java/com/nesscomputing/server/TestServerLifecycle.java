@@ -15,15 +15,15 @@
  */
 package com.nesscomputing.server;
 
+import com.google.inject.Binder;
+import com.google.inject.Module;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.inject.Binder;
-import com.google.inject.Module;
 import com.nesscomputing.config.Config;
-import com.nesscomputing.server.StandaloneServer;
 import com.nesscomputing.testing.lessio.AllowNetworkAccess;
 import com.nesscomputing.testing.lessio.AllowNetworkListen;
 
@@ -50,6 +50,12 @@ public class TestServerLifecycle
                     public void configure(final Binder binder) {
                     }
                 };
+            }
+
+            @Override
+            protected String getServerType()
+            {
+                return "test";
             }
         };
     }

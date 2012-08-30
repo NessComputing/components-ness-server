@@ -44,6 +44,12 @@ public class PunyServer extends StandaloneServer
         return new PunyModule(config);
     }
 
+    @Override
+    public String getServerType()
+    {
+        return "puny";
+    }
+
     public static class PunyModule extends AbstractModule
     {
         private final Config config;

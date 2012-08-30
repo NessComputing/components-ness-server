@@ -86,7 +86,16 @@ public abstract class StandaloneServer
         AssimilateForeignLogging.assimilate();
     }
 
+    /**
+     * Returns the main guice module for the server.
+     */
     protected abstract Module getMainModule(final Config config);
+
+    /**
+     * Returns the server type. Must be set so that the server info contains
+     * the right server type.
+     */
+    protected abstract String getServerType();
 
     public void startServer()
     {
@@ -223,8 +232,8 @@ public abstract class StandaloneServer
         return new LifecycleModule();
     }
 
-    protected String getServerType()
+    protected String getServerToken()
     {
-        return "default";
+        return UUID.randomUUID().toString();
     }
 }
