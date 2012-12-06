@@ -32,6 +32,7 @@ import com.nesscomputing.tracking.guice.TrackingModule;
  *   <li>Galaxy support</li>
  *   <li>Http Server</li>
  *   <li>Yammer metrics</li>
+ *   <li>Jolokia JMX access over HTTP</li>
  *   <li>JDBI database configuration</li>
  *   <li>Jackson</li>
  *   <li>Jersey with exception handling</li>
@@ -57,14 +58,14 @@ public class BasicGalaxyServerModule extends AbstractModule
     @Override
     protected void configure()
     {
-        install(new GalaxyConfigModule());
-        install(new HttpServerModule(config));
+        install (new GalaxyConfigModule());
+        install (new HttpServerModule(config));
 
         install (new NessJacksonModule());
 
-        install(new ThreadDelegatedScopeModule());
-        install(new TrackingModule());
+        install (new ThreadDelegatedScopeModule());
+        install (new TrackingModule());
 
-        install(new BasicDiscoveryServerModule(config, paths));
+        install (new BasicDiscoveryServerModule(config, paths));
     }
 }

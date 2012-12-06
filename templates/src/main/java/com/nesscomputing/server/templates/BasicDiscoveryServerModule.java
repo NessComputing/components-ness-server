@@ -29,6 +29,7 @@ import com.nesscomputing.jersey.NessJerseyServletModule;
 import com.nesscomputing.jersey.exceptions.NessJerseyExceptionMapperModule;
 import com.nesscomputing.jersey.filter.BodySizeLimitResourceFilterFactory;
 import com.nesscomputing.jersey.json.NessJacksonJsonProvider;
+import com.nesscomputing.jmx.jolokia.JolokiaModule;
 import com.nesscomputing.serverinfo.ServerInfoModule;
 
 /**
@@ -36,6 +37,7 @@ import com.nesscomputing.serverinfo.ServerInfoModule;
  *
  * <ul>
  *   <li>Yammer metrics</li>
+ *   <li>Jolokia JMX access over HTTP</li>
  *   <li>JDBI database configuration</li>
  *   <li>Jersey with exception handling</li>
  *   <li>selftest endpoint</li>
@@ -60,20 +62,22 @@ public class BasicDiscoveryServerModule extends AbstractModule
     @Override
     protected void configure()
     {
-        install(new InstrumentationModule());
+        install (new InstrumentationModule());
 
-        install(new DatabaseMetricsModule());
-        install(new ArgumentFactoryModule());
+        install (new DatabaseMetricsModule());
+        install (new ArgumentFactoryModule());
 
-        install(new JerseyServletModule());
-        install(new NessJerseyServletModule(config, paths));
+        install (new JerseyServletModule());
+        install (new NessJerseyServletModule(config, paths));
         install (new NessJerseyExceptionMapperModule());
 
         NessJerseyBinder.bindResourceFilterFactory(binder()).to(BodySizeLimitResourceFilterFactory.class);
 
         bind (NessJacksonJsonProvider.class);
 
-        install(new SelftestModule());
-        install(new ServerInfoModule());
+        install (new SelftestModule());
+        install (new ServerInfoModule());
+
+        install (new JolokiaModule());
     }
 }

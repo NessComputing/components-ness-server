@@ -55,6 +55,11 @@
 
     <dependency>
       <groupId>com.nesscomputing.components</groupId>
+      <artifactId>ness-jmx</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.nesscomputing.components</groupId>
       <artifactId>ness-scopes</artifactId>
     </dependency>
 
