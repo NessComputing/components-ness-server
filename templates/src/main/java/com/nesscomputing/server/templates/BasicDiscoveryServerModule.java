@@ -63,6 +63,7 @@ public class BasicDiscoveryServerModule extends AbstractModule
     protected void configure()
     {
         install (new InstrumentationModule());
+        install (new JolokiaModule());
 
         install (new DatabaseMetricsModule());
         install (new ArgumentFactoryModule());
@@ -78,6 +79,5 @@ public class BasicDiscoveryServerModule extends AbstractModule
         install (new SelftestModule());
         install (new ServerInfoModule());
 
-        install (new JolokiaModule());
     }
 }
