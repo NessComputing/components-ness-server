@@ -25,6 +25,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Stage;
+import com.google.inject.name.Named;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -51,6 +52,7 @@ public class TestPunyServer
     public final LifecycleStatement lifecycleRule = LifecycleStatement.serviceDiscoveryLifecycle();
 
     @Inject
+    @Named("test")
     public HttpClient httpClient;
 
     @Before
@@ -65,7 +67,7 @@ public class TestPunyServer
                                                       }
                                                   },
                                                   ConfigModule.forTesting(),
-                                                  new HttpClientModule(),
+                                                  new HttpClientModule("test"),
                                                   lifecycleRule.getLifecycleModule());
 
         inj.injectMembers(this);
