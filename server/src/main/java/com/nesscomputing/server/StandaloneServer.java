@@ -188,6 +188,8 @@ public abstract class StandaloneServer
                 binder.install(new JmxModule());
                 binder.install(new JmxStarterModule(config));
                 binder.install(new JmxLoggingModule(getServerType()));
+
+                binder.install(new JvmPauseAlarmModule());
             }
         };
     }
