@@ -175,6 +175,12 @@
       </dependency>
 
       <dependency>
+          <groupId>com.mogwee</groupId>
+          <artifactId>mogwee-executors</artifactId>
+          <version>1.2.1</version>
+      </dependency>
+
+      <dependency>
         <groupId>com.nesscomputing.components</groupId>
         <artifactId>ness-tinyhttp</artifactId>
         <version>1.2.1</version>

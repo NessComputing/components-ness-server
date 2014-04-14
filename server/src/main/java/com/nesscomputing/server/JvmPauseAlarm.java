@@ -15,30 +15,54 @@
  */
 package com.nesscomputing.server;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Throwables;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.mogwee.executors.LoggingExecutor;
 
 import com.nesscomputing.lifecycle.LifecycleStage;
 import com.nesscomputing.lifecycle.guice.OnStage;
 import com.nesscomputing.logging.Log;
 
+import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
+
 @Singleton
 class JvmPauseAlarm implements Runnable
 {
     private static final Log LOG = Log.findLog();
-    private static final long S_THRESHOLD = 1000;
+
+    private static final PeriodFormatter printFormat = new PeriodFormatterBuilder().printZeroAlways()
+                    .appendSeconds().appendSuffix(" second", "seconds")
+                    .appendSeparator(" and ").printZeroRarelyLast()
+                    .appendMillis().appendSuffix(" millisecond", " milliseconds").toFormatter();
+
+    private final ExecutorService executor = new LoggingExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
+        new LinkedBlockingQueue<Runnable>(),
+        new ThreadFactoryBuilder().setNameFormat("jvm-pause-alarm").setDaemon(true).build());
+
 
     private final JvmPauseAlarmConfig config;
+
+    private final long sleepTime;
+    private final long alarmTime;
+
+    private volatile boolean running = true;
 
     @Inject
     JvmPauseAlarm(JvmPauseAlarmConfig config)
     {
-        this.config = config;
+        this.config = checkNotNull(config, "config is null");
+
+        this.sleepTime = config.getCheckTime().getMillis();
+        this.alarmTime = config.getPauseAlarmTime().getMillis();
     }
 
     @OnStage(LifecycleStage.START)
@@ -48,48 +72,36 @@ class JvmPauseAlarm implements Runnable
             return;
         }
 
-        ExecutorService executor = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("jvm-pause-alarm").build());
         executor.submit(this);
+    }
+
+    @OnStage(LifecycleStage.STOP)
+    public void stop()
+    {
+        this.running = false;
         executor.shutdown();
     }
 
     @Override
     public void run()
     {
-        try {
-            safeRun();
-        } catch (Exception e) {
-            LOG.error(e, "Exiting due to exception");
-            throw Throwables.propagate(e);
-        }
-    }
+        LOG.info("Watching JVM for GC pausing.  Checking every %s for pauses of at least %s.", config.getCheckTime(), config.getPauseAlarmTime());
 
-    private void safeRun()
-    {
-        final long sleepTime = config.getCheckTime().getMillis();
-        final long alarmTime = config.getPauseAlarmTime().getMillis();
-
-        LOG.info("Watching JVM for GC pausing.  Checking every %s for pauses of at least %s.",
-                config.getCheckTime(), config.getPauseAlarmTime());
-
-        long lastUpdate = System.currentTimeMillis();
-        while (true) {
+        do {
+            final long startNanos = System.nanoTime();
             try {
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                LOG.info("Exiting due to interrupt");
-                return;
+                running = false;
             }
 
-            final long now = System.currentTimeMillis();
-            final long pauseMs = now - lastUpdate;
+            final long pauseMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos);
 
             if (pauseMs > alarmTime) {
-                LOG.warn("Detected pause of %s!", pauseMs > S_THRESHOLD ? String.format("%.1fs", pauseMs / 1000.0) : pauseMs + "ms");
+                final Period gcPeriod = new Period(pauseMs);
+                LOG.warn("Detected pause of %s!", printFormat.print(gcPeriod));
             }
-
-            lastUpdate = now;
-        }
+        } while(running);
     }
 }
