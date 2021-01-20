@@ -29,7 +29,7 @@
   </modules>
 
   <properties>
-    <dep.jackson.version>2.2.1</dep.jackson.version>
+    <dep.jackson.version>2.12.1</dep.jackson.version>
     <dep.yammer.version>2.1.2</dep.yammer.version>
     <dep.jersey.version>1.16</dep.jersey.version>
   </properties>
